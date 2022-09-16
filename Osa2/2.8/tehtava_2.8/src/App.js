@@ -10,6 +10,7 @@ const App = () => {
   ])
   const [newPerson, setNewPerson] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  
   const addPerson = (event) => {
     event.preventDefault()
     
