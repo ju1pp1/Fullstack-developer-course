@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import Note from './Components/Note'
+import Person from './Components/Person'
 import axios from 'axios'
 
 const App = () => {
@@ -10,18 +10,18 @@ const App = () => {
   useEffect(() => {
     console.log('effect')
     axios
-    .get('http://localhost:3001/notes')
+    .get('http://localhost:3001/persons')
     .then(response => {
       console.log('Promise fulfilled')
       setNotes(response.data)
   })
 }, [])
-  console.log('render', notes.length, 'notes')
+  console.log('render', notes.length, 'persons')
 
   const addNote = (event) => {
     event.preventDefault()
     const noteObject = {
-      content: newNote,
+      name: newNote,
       date: new Date().toISOString(),
       important: Math.random() > 0.5,
       id: notes.length + 1,
@@ -57,8 +57,8 @@ const App = () => {
         <h2>Numbers</h2>
           
         <ul>
-          {notesToShow.map(note =>
-            <Note key={note.id} note={note} />
+          {notesToShow.map(person =>
+            <Person key={person.id} person={person} />
        )}       
        </ul>
 

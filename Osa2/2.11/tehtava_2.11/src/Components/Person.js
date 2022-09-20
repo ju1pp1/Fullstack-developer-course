@@ -4,8 +4,11 @@ const Person = ({ person }) => {
       //  <li key={x.id}> {x.content} </li>
         //)}
     return (
-        
-        <p> {person.name} </p>
+        <div>
+            <li>
+            {person.name}
+            </li>
+        </div>
     )
 }
 export default Person
