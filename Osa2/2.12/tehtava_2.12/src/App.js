@@ -6,11 +6,12 @@ const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [value, setValue] = useState('')
 
   useEffect(() => {
     console.log('effect')
     axios
-    .get('http://localhost:3001/persons')
+    .get('https://restcountries.com/v3.1/all')
     .then(response => {
       console.log('Promise fulfilled')
       setNotes(response.data)
@@ -39,6 +40,11 @@ const App = () => {
 
   return (
       <div>
+        <div>
+          <p>Filter countries</p>
+          <input value={value} onChange={e => setValue(e.target.value)} >
+          </input>
+        </div>
         <h1>Phonebook</h1>
         
        <form onSubmit={addNote}>
@@ -54,12 +60,19 @@ const App = () => {
        </form>
 
        <div>
-        <h2>Numbers</h2>
+        
+        <h2>Countries</h2>
           
         <ul>
-          {notesToShow.map(person =>
+      {notes.filter(note => {
+        if (!value) return true
+        if (note.name.common.toLowerCase().includes(value) || note.name.common.includes(value)) {
+          return true
+        }
+      })
+        .map(person =>
             <Person key={person.id} person={person} />
-       )}       
+        )}
        </ul>
 
          <button onClick={() => setShowAll(!showAll)}>
@@ -71,4 +84,9 @@ const App = () => {
       </div>
   )
 }
+/*
+{notes.map(person =>
+            <Person key={person.id} person={person} />
+       )}  
+*/
 export default App

@@ -1,4 +1,4 @@
-const Person = ({ person }) => {
+const Country = ({ country }) => {
     
     //{notes.map(x => 
       //  <li key={x.id}> {x.content} </li>
@@ -6,9 +6,9 @@ const Person = ({ person }) => {
     return (
         <div>
             <li>
-            {person.name.common}
+            {country.name.common}
             </li>
         </div>
     )
 }
-export default Person
+export default Country
