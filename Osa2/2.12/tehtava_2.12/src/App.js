@@ -1,12 +1,14 @@
 import {useState, useEffect} from 'react'
-import Person from './Components/Person'
+import Country from './Components/Country'
+import Country2 from './Components/Country2'
 import axios from 'axios'
 
 const App = () => {
-  const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('')
+  const [countries, setCountries] = useState([])
+  const [newCountry, setNewCountry] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [value, setValue] = useState('')
+  const [newFilter, setNewFilter] = useState('')
 
   useEffect(() => {
     console.log('effect')
@@ -14,79 +16,79 @@ const App = () => {
     .get('https://restcountries.com/v3.1/all')
     .then(response => {
       console.log('Promise fulfilled')
-      setNotes(response.data)
+      setCountries(response.data)
   })
 }, [])
-  console.log('render', notes.length, 'persons')
+  console.log('render', countries.length, 'countries')
 
   const addNote = (event) => {
     event.preventDefault()
     const noteObject = {
-      name: newNote,
+      name: newCountry,
       date: new Date().toISOString(),
       important: Math.random() > 0.5,
-      id: notes.length + 1,
+      id: countries.length + 1,
     }
-    setNotes(notes.concat(noteObject))
-    setNewNote('')
+    setCountries(countries.concat(noteObject))
+    setNewCountry('')
   }
   const handleNoteChange = (event) => {
     console.log(event.target.value)
-    setNewNote(event.target.value)
+    setNewCountry(event.target.value)
   }
-  const notesToShow = showAll
-  ? notes
-  : notes.filter(note => note.important)
+  const handleCountryChange = (event) => {
+    event.preventDefault()
+    setValue(event.target.value)
+    setNewFilter(event.target.value)
+    //console.log()
+  }
+  const countriesToShow = !newFilter
+  ? countries
+  : countries.filter(countries => countries.name.common.toLowerCase().includes(newFilter.toLocaleLowerCase()))
 
+  let fyi = "Too many matches."
+
+if (countriesToShow.length > 10)
+return (
+  <div>
+    Find countries Step 1 <input value={newFilter} onChange={handleCountryChange} />
+    <ul>
+      {fyi}
+    </ul>
+  </div>
+)
+ else if (countriesToShow.length < 10 && countriesToShow.length > 1)
   return (
       <div>
-        <div>
-          <p>Filter countries</p>
-          <input value={value} onChange={e => setValue(e.target.value)} >
+        
+          <p>Find countries Step 2 </p>
+          <input value={newFilter} onChange={handleCountryChange } >
           </input>
-        </div>
-        <h1>Phonebook</h1>
-        
-       <form onSubmit={addNote}>
-        <div>
-        Name: <input 
-        value={newNote}
-        onChange={handleNoteChange}
-        />
-        </div>
-        <div>
-        <button type="Submit">Save</button>
-        </div>
-       </form>
-
-       <div>
-        
-        <h2>Countries</h2>
-          
         <ul>
-      {notes.filter(note => {
-        if (!value) return true
-        if (note.name.common.toLowerCase().includes(value) || note.name.common.includes(value)) {
-          return true
-        }
-      })
-        .map(person =>
-            <Person key={person.id} person={person} />
-        )}
-       </ul>
-
-         <button onClick={() => setShowAll(!showAll)}>
-            show {showAll ? 'important' : 'all' }
-          </button>  
-          
+          {countriesToShow.map(country => (
+            <Country key={country.id} country={country} />
+          ))}
+        </ul>
         </div>
+  )
+  else if (countriesToShow.length === 1)
+  return (
+       <div>
+        <p>Find countries Step 3</p>
+        <input value={newFilter} onChange={handleCountryChange } ></input>
+        <ul>
+      {countriesToShow.map(country2 => (
+        <Country2 key={country2.name} country2={country2} />
+        ))
+      }
+       </ul>  
+          
+        
 
       </div>
   )
 }
 /*
-{notes.map(person =>
-            <Person key={person.id} person={person} />
-       )}  
+ 
 */
 export default App
