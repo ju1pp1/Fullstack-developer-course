@@ -8,7 +8,9 @@ const Country2 = ({ country2 }) => {
         
         console.log(first)
         
-        
+        const flagi = country2.flags.png
+        let url = `${flagi}`
+        console.log(url)
         
     return (
         <div>
@@ -18,8 +20,8 @@ const Country2 = ({ country2 }) => {
             <p>Area: {country2.area}</p>
 
             <h2><b>Languages</b></h2>
-            <li key={country2.id} > {Object.values(country2.languages) + " "} </li>
-            
+            <li key={country2.id} > {Object.values(country2.languages) + " "} </li> <br></br>
+            <img src={url} ></img>
         </div>
         
     )
