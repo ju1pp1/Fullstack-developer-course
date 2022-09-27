@@ -40,6 +40,27 @@ const App = () => {
     setNotes(notes.filter(n => n.id !== id))
   })
 }
+const deleteObjectOf = id => {
+  const deleteNote = notes.find(n => n.id === id)
+  const deletedNote = {...deleteNote}
+
+  const confirm = window.confirm(`Are you sure?`)
+  if(confirm) {
+    noteService
+    .deleteThis(id, deletedNote).then(deletednote => {
+      //setNotes(notes.map(note => note.id ? note : deletednote))
+      setNotes(notes.filter(n => n.id !== id))
+    })
+    .catch(error => {
+      alert(
+        `the user '${deleteNote.name}' has already been deleted from the server.`
+      )
+      setNotes(notes.filter(n => n.id !== id))
+    })
+  } else {
+  
+}
+}
 
   const addNote = (event) => {
     event.preventDefault()
@@ -92,7 +113,7 @@ const App = () => {
           
         <ul>
           {notesToShow.map(note =>
-            <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)} />
+            <Note key={note.id} note={note} deleteObject={() => deleteObjectOf(note.id) } toggleImportance={() => toggleImportanceOf(note.id)} />
        )}       
        </ul>
 
