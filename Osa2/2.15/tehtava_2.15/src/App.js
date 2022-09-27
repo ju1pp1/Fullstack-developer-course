@@ -7,6 +7,7 @@ const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [newNumber, setNewNumber] = useState('')
 
   useEffect(() => {
     noteService
@@ -45,6 +46,7 @@ const App = () => {
     event.preventDefault()
     const noteObject = {
       name: newNote,
+      phone: newNumber,
       date: new Date().toISOString(),
       important: Math.random() > 0.5,
     }
@@ -64,8 +66,12 @@ const App = () => {
   })
 }
   const handleNoteChange = (event) => {
-    console.log(event.target.value)
+    //console.log(event.target.value)
     setNewNote(event.target.value)
+  }
+  const handleNumberChange = (event) => {
+    //console.log(event.target.value)
+    setNewNumber(event.target.value)
   }
   const notesToShow = showAll
   ? notes
@@ -81,6 +87,10 @@ const App = () => {
         value={newNote}
         onChange={handleNoteChange}
         />
+        Number: <input
+        value={newNumber}
+        onChange={handleNumberChange} >
+        </input>
         </div>
         <div>
         <button type="Submit">Save</button>
