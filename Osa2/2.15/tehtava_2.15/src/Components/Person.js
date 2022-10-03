@@ -1,13 +1,11 @@
-const Person = ({ person }) => {
+const Person = ({ personChange }) => {
     
     //{notes.map(x => 
       //  <li key={x.id}> {x.content} </li>
         //)}
     return (
         <div>
-            <li>
-            {person.name}
-            </li>
+            <button type="Submit" onClick={personChange} >Add</button>
         </div>
     )
 }
