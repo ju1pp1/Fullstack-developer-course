@@ -1,12 +1,27 @@
 import {useState, useEffect} from 'react'
 import Note from './Components/Note'
-
 import noteService from './Services/notes'
+import Notification from './Components/Notification'
+
+const Footer = () => {
+  const footerStyle = {
+    color: 'green',
+    fontStyle: 'italic',
+    fontSize: 16
+  }
+  return (
+    <div style={footerStyle}>
+      <br/>
+      <em>Note app, Department of Computer Science, University of Helsinki 2022</em>
+    </div>
+  )
+}
 
 const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     noteService
@@ -34,9 +49,12 @@ const App = () => {
     setNotes(notes.map(note => note.id !== id ? note : returnedNote))
   })
   .catch(error => {
-    alert(
+    setErrorMessage(
       `the note '${note.content}' was already deleted from server`
     )
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
     setNotes(notes.filter(n => n.id !== id))
   })
 }
@@ -85,9 +103,9 @@ const deleteObjectOf = id => {
   })
 }
   const handleNoteChange = (event) => {
-    console.log(event.target.value)
     setNewNote(event.target.value)
   }
+
   const notesToShow = showAll
   ? notes
   : notes.filter(note => note.important)
@@ -110,7 +128,7 @@ const deleteObjectOf = id => {
 
        <div>
         <h2>Numbers</h2>
-          
+        <Notification message={errorMessage} />
         <ul>
           {notesToShow.map(note =>
             <Note key={note.id} note={note} deleteObject={() => deleteObjectOf(note.id) } toggleImportance={() => toggleImportanceOf(note.id)} />
@@ -120,7 +138,7 @@ const deleteObjectOf = id => {
          <button onClick={() => setShowAll(!showAll)}>
             show {showAll ? 'important' : 'all' }
           </button>  
-          
+          <Footer/>
         </div>
 
       </div>

@@ -11,6 +11,13 @@ const getAll = () => {
     }
     return request.then(response => response.data.concat(nonExisting))
 }
+/*
+const getAll = () => {
+  const request = axios.get(baseUrl)
+
+  return request.then(response => response.data)
+}
+*/
 
 const create = newObject => {
     const request = axios.post(baseUrl, newObject)
