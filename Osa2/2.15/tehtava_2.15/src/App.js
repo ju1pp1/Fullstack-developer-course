@@ -1,3 +1,4 @@
+import axios from 'axios'
 import {useState, useEffect} from 'react'
 import Note from './Components/Note'
 //import Person from './Components/Person'
@@ -87,20 +88,36 @@ const deleteObjectOf = id => {
 
       if(confirm) {
         console.log('Korvaamisen pitäisi tapahtua')
-        const replaceObjectOf = id => {
-        const note = notes.find(n => n.id === id)
-        const replacedNote = {...note}
+        // {phone: }
+        const findtheguy = notes.find(n => n.name === newNote)
+        console.log(findtheguy.id)
+
+        const note = notes.find(n => n.id === findtheguy.id)
+        console.log(note)
+
+        const replacedNote = {...note, phone: newNumber}
+        console.log(replacedNote)
+
         noteService
-        .replace(replacedNote.id).then(replacednote => {
-          setNotes(notes.map(n => n.id ))
+        .replace(note.id, replacedNote).then(returnedNote => { //note.id
+          setNotes(notes.map(note => note.phone === newNumber ))
+        })
+    }
+    }
+  }
+/*
+ noteService
+         .replace(noteObject).then(returnedNote => {
+          setNotes(notes.concat(returnedNote))
           setNewNumber('')
         })
-      }
-      return replaceObjectOf
+        .catch(error => {
+          alert(
+            `the note '${note.content}' was already deleted from server`
+          )
+          setNotes(notes.filter(n => n.id !== id))
     }
-    }
-    }
-
+*/
   const handleNoteChange = (event) => {
     console.log(event.target.value)
     setNewNote(event.target.value)
