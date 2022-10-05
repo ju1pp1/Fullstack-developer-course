@@ -1,3 +1,4 @@
+import axios from 'axios'
 import {useState, useEffect} from 'react'
 import Note from './Components/Note'
 import noteService from './Services/notes'
@@ -22,6 +23,7 @@ const App = () => {
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [newNumber, setNewNumber] = useState('')
 
   useEffect(() => {
     noteService
@@ -84,6 +86,7 @@ const deleteObjectOf = id => {
     event.preventDefault()
     const noteObject = {
       name: newNote,
+      phone: newNumber,
       date: new Date().toISOString(),
       important: Math.random() > 0.5,
     }
@@ -95,17 +98,44 @@ const deleteObjectOf = id => {
             setNewNote('')
           }) 
     */
-  noteService
-  .create(noteObject)
-  .then(returnedNote => {
-    setNotes(notes.concat(returnedNote))
-    setNewNote('')
-  })
-}
+  if (notes.findIndex((p) => p.name == newNote) == -1 ) {
+    noteService
+    .create(noteObject)
+    .then(returnedNote => {
+      setNotes(notes.concat(returnedNote))
+      setNewNote('')
+    })
+  }
+  if (notes.findIndex((p) => p.name == newNote) != -1 ) {
+    const confirm = window.confirm(`Name '${newNote}' already exists, replace new number?`)
+
+    if(confirm) {
+      console.log('Korvaamisen pitäisi tapahtua')
+      // {phone: }
+      const findtheguy = notes.find(n => n.name === newNote)
+      console.log(findtheguy.id)
+
+      const note = notes.find(n => n.id === findtheguy.id)
+      console.log(note)
+
+      const replacedNote = {...note, phone: newNumber}
+      console.log(replacedNote)
+
+      noteService
+      .replace(note.id, replacedNote).then(returnedNote => { //note.id
+        setNotes(notes.map(note => note.phone === newNumber ))
+      })
+  }
+  }
+  }
+  
+  
   const handleNoteChange = (event) => {
     setNewNote(event.target.value)
   }
-
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value)
+  }
   const notesToShow = showAll
   ? notes
   : notes.filter(note => note.important)
@@ -120,6 +150,9 @@ const deleteObjectOf = id => {
         value={newNote}
         onChange={handleNoteChange}
         />
+        </div>
+        <div>
+          Number: <input value={newNumber} onChange={handleNumberChange} ></input>
         </div>
         <div>
         <button type="Submit">Save</button>
