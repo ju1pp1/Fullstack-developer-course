@@ -79,9 +79,12 @@ const deleteObjectOf = id => {
       }, 5000)
     })
     .catch(error => {
-      alert(
-        `the user '${deleteNote.name}' has already been deleted from the server.`
+      setErrorMessage(
+        `the user '${deleteNote.name}' was already deleted from the server.`
       )
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
       setNotes(notes.filter(n => n.id !== id))
     })
   } else {
@@ -138,7 +141,8 @@ const deleteObjectOf = id => {
 
       noteService
       .replace(note.id, replacedNote).then(returnedNote => { //note.id
-        setNotes(notes.map(note => note.phone == newNumber))
+        setNotes(notes.map(note => note.phone !== newNumber ? note : returnedNote))
+        
         setSuccessMessage(
           `the user's number was successfully changed.`
         )
