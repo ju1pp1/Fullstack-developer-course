@@ -1,5 +1,6 @@
 const Notification = ({ message }) => {
-    if (message === null) {
+  
+  if (message === null) {
       return null
     }
   
@@ -7,6 +8,7 @@ const Notification = ({ message }) => {
       <div className="error">
         {message}
       </div>
+      
     )
   }
   

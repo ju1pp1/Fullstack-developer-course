@@ -1,8 +1,8 @@
-import axios from 'axios'
 import {useState, useEffect} from 'react'
 import Note from './Components/Note'
 import noteService from './Services/notes'
 import Notification from './Components/Notification'
+import GoodNotification from './Components/GoodNotification'
 
 const Footer = () => {
   const footerStyle = {
@@ -23,6 +23,7 @@ const App = () => {
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
   const [newNumber, setNewNumber] = useState('')
 
   useEffect(() => {
@@ -70,6 +71,12 @@ const deleteObjectOf = id => {
     .deleteThis(id, deletedNote).then(deletednote => {
       //setNotes(notes.map(note => note.id ? note : deletednote))
       setNotes(notes.filter(n => n.id !== id))
+      setSuccessMessage(
+        `the user was successfully deleted.`
+      )
+      setTimeout(() => {
+        setSuccessMessage(null)
+      }, 5000)
     })
     .catch(error => {
       alert(
@@ -83,13 +90,20 @@ const deleteObjectOf = id => {
 }
 
   const addNote = (event) => {
-    event.preventDefault()
+    event.preventDefault() 
     const noteObject = {
       name: newNote,
       phone: newNumber,
       date: new Date().toISOString(),
       important: Math.random() > 0.5,
     }
+    setSuccessMessage(
+      `the user was successfully added.`
+    )
+    setTimeout(() => {
+      setSuccessMessage(null)
+    }, 5000)
+    //event.target.reset()
     /*
     axios
           .post('http://localhost:3001/notes', noteObject)
@@ -104,6 +118,7 @@ const deleteObjectOf = id => {
     .then(returnedNote => {
       setNotes(notes.concat(returnedNote))
       setNewNote('')
+      setNewNumber('')
     })
   }
   if (notes.findIndex((p) => p.name == newNote) != -1 ) {
@@ -123,8 +138,17 @@ const deleteObjectOf = id => {
 
       noteService
       .replace(note.id, replacedNote).then(returnedNote => { //note.id
-        setNotes(notes.map(note => note.phone === newNumber ))
+        setNotes(notes.map(note => note.phone == newNumber))
+        setSuccessMessage(
+          `the user's number was successfully changed.`
+        )
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
       })
+      setTimeout(() => {
+        window.location.reload()
+      }, 5000)
   }
   }
   }
@@ -135,6 +159,7 @@ const deleteObjectOf = id => {
   }
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
+
   }
   const notesToShow = showAll
   ? notes
@@ -154,14 +179,13 @@ const deleteObjectOf = id => {
         <div>
           Number: <input value={newNumber} onChange={handleNumberChange} ></input>
         </div>
-        <div>
-        <button type="Submit">Save</button>
-        </div>
+        <button >Save</button>
        </form>
 
        <div>
         <h2>Numbers</h2>
         <Notification message={errorMessage} />
+        <GoodNotification goodMessage={successMessage} />
         <ul>
           {notesToShow.map(note =>
             <Note key={note.id} note={note} deleteObject={() => deleteObjectOf(note.id) } toggleImportance={() => toggleImportanceOf(note.id)} />
