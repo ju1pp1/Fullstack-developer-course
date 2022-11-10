@@ -19,6 +19,10 @@
     "eject": "react-scripts eject",
     "server": "json-server -p3001 --watch db.json"
   },
+  "options": {
+    "allowedHosts": ["all"],
+    "proxy": "http://localhost:3001/api/persons"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",

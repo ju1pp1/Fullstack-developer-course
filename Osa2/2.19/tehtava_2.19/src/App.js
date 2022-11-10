@@ -28,7 +28,7 @@ const App = () => {
 
   useEffect(() => {
     noteService
-    .getAll()
+    .getAll() //getAll()
     .then(initialNotes => {
       setNotes(initialNotes)
     })
@@ -96,7 +96,7 @@ const deleteObjectOf = id => {
     event.preventDefault() 
     const noteObject = {
       name: newNote,
-      phone: newNumber,
+      number: newNumber,
       date: new Date().toISOString(),
       important: Math.random() > 0.5,
     }
@@ -129,19 +129,19 @@ const deleteObjectOf = id => {
 
     if(confirm) {
       console.log('Korvaamisen pitäisi tapahtua')
-      // {phone: }
+      // {number: }
       const findtheguy = notes.find(n => n.name === newNote)
       console.log(findtheguy.id)
 
       const note = notes.find(n => n.id === findtheguy.id)
       console.log(note)
 
-      const replacedNote = {...note, phone: newNumber}
+      const replacedNote = {...note, number: newNumber}
       console.log(replacedNote)
 
       noteService
       .replace(note.id, replacedNote).then(returnedNote => { //note.id
-        setNotes(notes.map(note => note.phone !== newNumber ? note : returnedNote))
+        setNotes(notes.map(note => note.number !== newNumber ? note : returnedNote))
         
         setSuccessMessage(
           `the user's number was successfully changed.`
