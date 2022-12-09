@@ -34,6 +34,8 @@ const App = () => {
     })
 }, [])
 
+
+
   const toggleImportanceOf = id => {
     //Jokaiselle muistiinpanolle id-kenttään perustuva yksilöivä url.
     //const url = `http://localhost:3001/notes/${id}`
@@ -53,7 +55,7 @@ const App = () => {
   })
   .catch(error => {
     setErrorMessage(
-      `the note '${note.content}' was already deleted from server`
+      `the note '${note.name}' was already deleted from server` //'${note.content}'
     )
     setTimeout(() => {
       setErrorMessage(null)
@@ -100,12 +102,7 @@ const deleteObjectOf = id => {
       date: new Date().toISOString(),
       important: Math.random() > 0.5,
     }
-    setSuccessMessage(
-      `the user was successfully added.`
-    )
-    setTimeout(() => {
-      setSuccessMessage(null)
-    }, 5000)
+    
     //event.target.reset()
     /*
     axios
@@ -115,6 +112,7 @@ const deleteObjectOf = id => {
             setNewNote('')
           }) 
     */
+          
   if (notes.findIndex((p) => p.name == newNote) == -1 ) {
     noteService
     .create(noteObject)
@@ -122,6 +120,23 @@ const deleteObjectOf = id => {
       setNotes(notes.concat(returnedNote))
       setNewNote('')
       setNewNumber('')
+      setSuccessMessage(
+        `the user was successfully added.`
+      )
+      setTimeout(() => {
+        setSuccessMessage(null)
+      }, 5000)
+    })
+    .catch(error => {
+      const errorData = error.response.data
+      console.log(error)
+        setErrorMessage(
+          `Person validation failed: '${errorData.error}'`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        console.log(errorData.error)
     })
   }
   if (notes.findIndex((p) => p.name == newNote) != -1 ) {
