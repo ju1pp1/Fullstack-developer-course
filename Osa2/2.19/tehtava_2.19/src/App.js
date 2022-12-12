@@ -131,11 +131,12 @@ const deleteObjectOf = id => {
       const errorData = error.response.data
       console.log(error)
         setErrorMessage(
-          `Person validation failed: '${errorData.error}'`
+          `'${errorData.error}'`
+          //`Person validation failed: '${errorData.error}'`
         )
         setTimeout(() => {
           setErrorMessage(null)
-        }, 5000)
+        }, 10000)
         console.log(errorData.error)
     })
   }
